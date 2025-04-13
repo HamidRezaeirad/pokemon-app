@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  pokemon-app:
+    build: .
+    container_name: pokemon-app
+    ports:
+      - '3000:3000'
+    environment:
+      PORT: ${APP_PORT}
+      POKEMON_DATA_URL: ${POKEMON_DATA_URL}
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASS: ${MONGO_PASS}
+      MONGO_DB: PokemonDB
+      MONGO_HOST: mongo # This should match the service name in docker-compose
+      MONGO_PORT: ${MONGO_PORT}
+      MONGO_AUTH_DB: ${MONGO_AUTH_DB}
+    depends_on:
+      - mongo
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:6
+    container_name: pokemon-mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+
+  mongo-express:
+    image: mongo-express
+    container_name: pokemon-mongo-express
+    restart: always
+    depends_on:
+      - mongo
+    ports:
+      - '8081:8081'
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_BASICAUTH: 'true' # Set to "true" to enable login page
+
+volumes:
+  mongo-data:
