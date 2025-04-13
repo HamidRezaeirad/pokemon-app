@@ -44,64 +44,8 @@ describe('BattlesService', () => {
 
     jest
       .spyOn(pokemonsService, 'getPokemonsByNames')
-      .mockResolvedValueOnce([
-        {
-          name: 'Pikachu',
-          id: 0,
-          num: '',
-          img: '',
-          type: [],
-          height: '',
-          weight: '',
-          candy: '',
-          candy_count: 0,
-          egg: '',
-          spawn_chance: 0,
-          avg_spawns: 0,
-          spawn_time: '',
-          multipliers: [],
-          next_evolution: [],
-          weaknesses: [],
-        },
-        {
-          name: 'Charmander',
-          id: 0,
-          num: '',
-          img: '',
-          type: [],
-          height: '',
-          weight: '',
-          candy: '',
-          candy_count: 0,
-          egg: '',
-          spawn_chance: 0,
-          avg_spawns: 0,
-          spawn_time: '',
-          multipliers: [],
-          next_evolution: [],
-          weaknesses: [],
-        },
-      ])
-      .mockResolvedValueOnce([
-        {
-          name: 'Bulbasaur',
-          id: 0,
-          num: '',
-          img: '',
-          type: [],
-          height: '',
-          weight: '',
-          candy: '',
-          candy_count: 0,
-          egg: '',
-          spawn_chance: 0,
-          avg_spawns: 0,
-          spawn_time: '',
-          multipliers: [],
-          next_evolution: [],
-          weaknesses: [],
-        },
-      ]);
+      .mockResolvedValueOnce([pikachuPokemon, charmanderPokemon])
+      .mockResolvedValueOnce([bulbasaurPokemon]);
 
     await expect(battlesService.simulate(battlesDto)).rejects.toThrow(
       BadRequestException,
@@ -114,83 +58,13 @@ describe('BattlesService', () => {
       teamB: ['Bulbasaur', 'Squirtle'],
     };
 
-    jest.spyOn(pokemonsService, 'getPokemonsByNames').mockResolvedValueOnce([
-      {
-        name: 'Pikachu',
-        height: '0.41 m',
-        weight: '6.0 kg',
-        multipliers: [2.34],
-        id: 0,
-        num: '',
-        img: '',
-        type: [],
-        candy: '',
-        candy_count: 0,
-        egg: '',
-        spawn_chance: 0,
-        avg_spawns: 0,
-        spawn_time: '',
-        next_evolution: [],
-        weaknesses: [],
-      },
-      {
-        name: 'Charmander',
-        height: '0.61 m',
-        weight: '8.5 kg',
-        multipliers: [1.65],
-        id: 0,
-        num: '',
-        img: '',
-        type: [],
-        candy: '',
-        candy_count: 0,
-        egg: '',
-        spawn_chance: 0,
-        avg_spawns: 0,
-        spawn_time: '',
-        next_evolution: [],
-        weaknesses: [],
-      },
-    ]);
+    jest
+      .spyOn(pokemonsService, 'getPokemonsByNames')
+      .mockResolvedValueOnce([pikachuPokemon, charmanderPokemon]);
 
-    jest.spyOn(pokemonsService, 'getPokemonsByNames').mockResolvedValueOnce([
-      {
-        name: 'Bulbasaur',
-        height: '0.71 m',
-        weight: '6.9 kg',
-        multipliers: [1.58],
-        id: 0,
-        num: '',
-        img: '',
-        type: [],
-        candy: '',
-        candy_count: 0,
-        egg: '',
-        spawn_chance: 0,
-        avg_spawns: 0,
-        spawn_time: '',
-        next_evolution: [],
-        weaknesses: [],
-      },
-      {
-        name: 'Squirtle',
-        height: '0.51 m',
-        weight: '9.0 kg',
-        multipliers: [2.1],
-        id: 0,
-        num: '',
-        img: '',
-        type: [],
-        candy: '',
-        candy_count: 0,
-        egg: '',
-        spawn_chance: 0,
-        avg_spawns: 0,
-        spawn_time: '',
-        next_evolution: [],
-        weaknesses: [],
-      },
-    ]);
+    jest
+      .spyOn(pokemonsService, 'getPokemonsByNames')
+      .mockResolvedValueOnce([bulbasaurPokemon, squirtlePokemon]);
 
     const result = await battlesService.simulate(battlesDto);
 
@@ -201,58 +75,96 @@ describe('BattlesService', () => {
       winnerTeam: 'Team B',
       log: [
         'Battle log:',
-        'Battle 1: Pikachu score is 5.463 vs Bulbasaur score is 5.243  -> Pikachu wins',
-        'Battle 2: Pikachu score is 5.463 vs Squirtle score is 6.753  -> Squirtle wins',
-        'Battle 3: Charmander score is 6.083 vs Squirtle score is 6.753  -> Squirtle wins',
+        'Battle 1: Pikachu score is 6.463 vs Bulbasaur score is 6.243  -> Pikachu wins',
+        'Battle 2: Pikachu score is 6.463 vs Squirtle score is 7.753  -> Squirtle wins',
+        'Battle 3: Charmander score is 7.083 vs Squirtle score is 7.753  -> Squirtle wins',
       ],
     });
   });
 
   it('should correctly determine the winner in battleLogic', () => {
-    const pokemonA: Pokemon = {
-      name: 'Pikachu',
-      height: '0.41 m',
-      weight: '6.0 kg',
-      multipliers: [2.34],
-      id: 0,
-      num: '',
-      img: '',
-      type: [],
-      candy: '',
-      candy_count: 0,
-      egg: '',
-      spawn_chance: 0,
-      avg_spawns: 0,
-      spawn_time: '',
-      next_evolution: [],
-      weaknesses: [],
-    };
-    const pokemonB: Pokemon = {
-      name: 'Bulbasaur',
-      height: '0.71 m',
-      weight: '6.9 kg',
-      multipliers: [1.58],
-      id: 0,
-      num: '',
-      img: '',
-      type: [],
-      candy: '',
-      candy_count: 0,
-      egg: '',
-      spawn_chance: 0,
-      avg_spawns: 0,
-      spawn_time: '',
-      next_evolution: [],
-      weaknesses: [],
-    };
-
-    const result = battlesService.battleLogic(pokemonA, pokemonB);
+    const result = battlesService.battleLogic(pikachuPokemon, bulbasaurPokemon);
 
     expect(result).toEqual({
-      winner: pokemonA,
+      winner: pikachuPokemon,
       winnerTeam: 'A',
-      scoreA: 5.463,
-      scoreB: 5.243,
+      scoreA: 6.463,
+      scoreB: 6.243,
     });
   });
 });
+
+const pikachuPokemon: Pokemon = {
+  name: 'Pikachu',
+  height: '0.41 m',
+  weight: '6.0 kg',
+  multipliers: [2.34],
+  id: 0,
+  num: '',
+  img: '',
+  type: [],
+  candy: '',
+  candy_count: 0,
+  egg: '',
+  spawn_chance: 0,
+  avg_spawns: 0,
+  spawn_time: '',
+  next_evolution: [],
+  weaknesses: [],
+};
+const bulbasaurPokemon: Pokemon = {
+  name: 'Bulbasaur',
+  height: '0.71 m',
+  weight: '6.9 kg',
+  multipliers: [1.58],
+  id: 0,
+  num: '',
+  img: '',
+  type: [],
+  candy: '',
+  candy_count: 0,
+  egg: '',
+  spawn_chance: 0,
+  avg_spawns: 0,
+  spawn_time: '',
+  next_evolution: [],
+  weaknesses: [],
+};
+
+const squirtlePokemon: Pokemon = {
+  name: 'Squirtle',
+  height: '0.51 m',
+  weight: '9.0 kg',
+  multipliers: [2.1],
+  id: 0,
+  num: '',
+  img: '',
+  type: [],
+  candy: '',
+  candy_count: 0,
+  egg: '',
+  spawn_chance: 0,
+  avg_spawns: 0,
+  spawn_time: '',
+  next_evolution: [],
+  weaknesses: [],
+};
+
+const charmanderPokemon: Pokemon = {
+  name: 'Charmander',
+  height: '0.61 m',
+  weight: '8.5 kg',
+  multipliers: [1.65],
+  id: 0,
+  num: '',
+  img: '',
+  type: [],
+  candy: '',
+  candy_count: 0,
+  egg: '',
+  spawn_chance: 0,
+  avg_spawns: 0,
+  spawn_time: '',
+  next_evolution: [],
+  weaknesses: [],
+};
