@@ -98,14 +98,14 @@ export class BattlesService {
   battleLogic(pokemonA: Pokemon, pokemonB: Pokemon): BattleResult {
     const scoreA =
       (pokemonA.multipliers
-        ? pokemonA.multipliers.reduce((acc, multiplier) => acc * multiplier, 1)
+        ? pokemonA.multipliers.reduce((acc, multiplier) => acc + multiplier, 1)
         : 0) +
       parseFloat(pokemonA.weight) * 0.5 +
       parseFloat(pokemonA.height) * 0.3;
 
     const scoreB =
       (pokemonB.multipliers
-        ? pokemonB.multipliers.reduce((acc, multiplier) => acc * multiplier, 1)
+        ? pokemonB.multipliers.reduce((acc, multiplier) => acc + multiplier, 1)
         : 0) +
       parseFloat(pokemonB.weight) * 0.5 +
       parseFloat(pokemonB.height) * 0.3;
