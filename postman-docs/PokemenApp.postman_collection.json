@@ -1,0 +1,42 @@
+{
+	"info": {
+		"_postman_id": "e4276daf-05fc-47ea-8096-854fcaa30ac9",
+		"name": "PokemenApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3509814"
+	},
+	"item": [
+		{
+			"name": "battles",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"teamA\": [\"Pikachu\", \"Charmander\"],\n    \"teamB\": [\"Bulbasaur\", \"Squirtle\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/battles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"battles"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
