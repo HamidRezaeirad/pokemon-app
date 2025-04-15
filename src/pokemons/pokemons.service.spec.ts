@@ -5,7 +5,6 @@ import { PokemonsService } from './pokemons.service';
 
 describe('PokemonsService', () => {
   let service: PokemonsService;
-  let repository: PokemonRepository;
 
   const mockPokemonRepository = {
     findByNames: jest.fn(),
@@ -20,7 +19,6 @@ describe('PokemonsService', () => {
     }).compile();
 
     service = module.get<PokemonsService>(PokemonsService);
-    repository = module.get<PokemonRepository>(PokemonRepository);
   });
 
   it('should be defined', () => {
@@ -68,7 +66,7 @@ describe('PokemonsService', () => {
     });
 
     it('should log an error and throw NotFoundException if an error occurs in the repository', async () => {
-      const mockNames = ['pikachu'];
+      const mockNames = ['pikachu12'];
       const mockError = new Error('Database error');
 
       mockPokemonRepository.findByNames.mockRejectedValue(mockError);

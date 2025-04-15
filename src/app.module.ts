@@ -4,7 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BattlesModule } from './battles/battles.module';
-import { configuration } from './config/configuration';
+import { EnvVariables } from './config/env.variables';
 import { PokemonsModule } from './pokemons/pokemons.module';
 import { PokemonSeedService } from './pokemons/pokemons.seed.service';
 
@@ -12,7 +12,7 @@ import { PokemonSeedService } from './pokemons/pokemons.seed.service';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [() => configuration],
+      load: [() => EnvVariables],
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],

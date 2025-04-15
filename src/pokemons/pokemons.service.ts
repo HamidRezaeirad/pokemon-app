@@ -27,13 +27,15 @@ export class PokemonsService {
     try {
       const pokemons = await this.pokemonRepo.findByNames(names);
 
+      // Sort the Pokémon objects based on the order of names provided
+      const pokemonMap = new Map(pokemons.map((p) => [p.name, p]));
       const sortedPokemons = names
-        .map((name) => pokemons.find((p) => p.name === name))
-        .filter(Boolean);
+        .map((name) => pokemonMap.get(name))
+        .filter((pokemon): pokemon is Pokemon => Boolean(pokemon));
 
       if (!sortedPokemons || sortedPokemons.length !== names.length) {
         throw new NotFoundException(
-          `Pokémon not found! Please check the Pokémon name or ID.`,
+          `Pokémon not found! Please check the Pokémon name.`,
         );
       }
 
@@ -42,7 +44,7 @@ export class PokemonsService {
       this.logger.error('Error fetching Pokémon data:', error);
 
       throw new NotFoundException(
-        `Pokémon not found! Please check the Pokémon name or ID.`,
+        `Pokémon not found! Please check the Pokémon name.`,
       );
     }
   }
