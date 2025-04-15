@@ -5,7 +5,6 @@ import { PokemonsService } from './pokemons.service';
 
 describe('PokemonsService', () => {
   let service: PokemonsService;
-  let repository: PokemonRepository;
 
   const mockPokemonRepository = {
     findByNames: jest.fn(),
@@ -20,7 +19,6 @@ describe('PokemonsService', () => {
     }).compile();
 
     service = module.get<PokemonsService>(PokemonsService);
-    repository = module.get<PokemonRepository>(PokemonRepository);
   });
 
   it('should be defined', () => {

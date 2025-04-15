@@ -1,7 +1,7 @@
 import { Transform } from 'class-transformer';
 import { IsNumber, IsString, IsUrl, Min } from 'class-validator';
 
-export class configuration {
+export class EnvVariables {
   @Transform(({ value }) => parseInt(value, 10))
   @IsNumber()
   @Min(1)

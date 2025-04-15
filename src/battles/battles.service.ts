@@ -34,8 +34,8 @@ export class BattlesService {
   async simulate(createBattlesDto: CreateBattlesDto): Promise<BattlesDto> {
     const { teamA: inputTeamA, teamB: inputTeamB } = createBattlesDto;
 
-    // Validate that both teams to not share Pokémons.
-    if (inputTeamA.filter((name) => new Set(inputTeamB).has(name)).length > 0) {
+    const teamBSet = new Set(inputTeamB);
+    if (inputTeamA.some((name) => teamBSet.has(name))) {
       throw new BadRequestException('Teams must not share any Pokémon.');
     }
 
@@ -66,12 +66,11 @@ export class BattlesService {
           `Battle ${battleNumber++}: ${pokémonA.name} score is ${scoreA.toFixed(3)} vs ${pokémonB.name} score is ${scoreB.toFixed(3)}  -> ${result.winner.name} wins`,
         );
 
-        result.winnerTeam === 'A' ? teamAScore++ : teamBScore++;
+        result.winnerTeam === Team.A ? teamAScore++ : teamBScore++;
 
-        if (result.winnerTeam === 'A') {
+        if (result.winnerTeam === Team.A) {
           teamB.splice(i, 1); // Remove the defeated Pokémon from Team B
-        }
-        if (result.winnerTeam === 'B') {
+        } else {
           teamA.splice(i, 1); // Remove the defeated Pokémon from Team A
         }
       }
@@ -96,21 +95,37 @@ export class BattlesService {
    * @returns An object containing the winning Pokémon and the team it belongs to.
    */
   battleLogic(pokemonA: Pokemon, pokemonB: Pokemon): BattleResult {
-    const scoreA =
-      (pokemonA.multipliers
-        ? pokemonA.multipliers.reduce((acc, multiplier) => acc + multiplier, 1)
-        : 0) +
-      parseFloat(pokemonA.weight) * 0.5 +
-      parseFloat(pokemonA.height) * 0.3;
-
-    const scoreB =
-      (pokemonB.multipliers
-        ? pokemonB.multipliers.reduce((acc, multiplier) => acc + multiplier, 1)
-        : 0) +
-      parseFloat(pokemonB.weight) * 0.5 +
-      parseFloat(pokemonB.height) * 0.3;
+    const scoreA = this.calculateScore(pokemonA);
+    const scoreB = this.calculateScore(pokemonB);
 
     const winner: Pokemon = scoreA > scoreB ? pokemonA : pokemonB;
-    return { winner, winnerTeam: scoreA > scoreB ? 'A' : 'B', scoreA, scoreB };
+    return {
+      winner,
+      winnerTeam: scoreA > scoreB ? Team.A : Team.B,
+      scoreA,
+      scoreB,
+    };
   }
+
+  /**
+   *
+   * @param pokemon - The Pokémon for which the score is to be calculated.
+   * The score is calculated based on the Pokémon's multipliers, weight, and height.
+   * @returns The calculated score for the Pokémon.
+   */
+  calculateScore(pokemon: Pokemon): number {
+    const multipliersScore =
+      pokemon.multipliers?.reduce((acc, multiplier) => acc + multiplier, 1) ||
+      0;
+    const weightScore = parseFloat(pokemon.weight) * 0.5;
+    const heightScore = parseFloat(pokemon.height) * 0.3;
+
+    return multipliersScore + weightScore + heightScore;
+  }
+}
+
+// Define an enum for team names
+enum Team {
+  A = 'A',
+  B = 'B',
 }

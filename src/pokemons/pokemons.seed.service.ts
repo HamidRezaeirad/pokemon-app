@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
-import { getLogger } from 'src/common/logger/logger';
+import { getLogger } from '../common/logger/logger';
 import { PokemonRepository } from './pokemon.repository';
 
 // The PokemonSeedService is responsible for seeding the Pokémon data into the database.

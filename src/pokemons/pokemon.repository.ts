@@ -21,7 +21,7 @@ export class PokemonRepository {
    * @returns The Pokémon document if found, or null if not found.
    */
 
-  // I might be change it to findById in real project
+  // It might be change it to findById in real project
   async findByNames(names: string[]): Promise<Pokemon[] | null> {
     return this.pokemonModel.find({ name: { $in: names } }).exec();
   }
@@ -35,11 +35,11 @@ export class PokemonRepository {
   }
 
   /**
-   * Insert array ofPokémon.
+   * Insert array of Pokémon.
    * @param pokemons - The array of the Pokémon to insert.
    * @returns The array of Pokémon document if found, or null if not found.
    */
-  async insertMany(pokemons: Pokemon[]): Promise<Pokemon[]> {
+  async insertMany(pokemons: Pokemon[]): Promise<Pokemon[] | null> {
     return this.pokemonModel.insertMany(pokemons);
   }
 }

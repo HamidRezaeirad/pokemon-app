@@ -8,7 +8,7 @@ export type PokemonDocument = HydratedDocument<Pokemon>;
 export class Pokemon {
   @Prop() id: number;
   @Prop() num: string;
-  @Prop() name: string;
+  @Prop({ index: true }) name: string;
   @Prop() img: string;
   @Prop([String]) type: string[];
   @Prop() height: string;
