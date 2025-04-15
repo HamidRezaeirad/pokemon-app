@@ -49,7 +49,7 @@ async function bootstrap() {
   const env = configService.get('NODE_ENV', 'development');
   await app.listen(port, () =>
     logger.log(
-      `Application is running in ${env} mode on: http://localhost:${port}/api mongo `,
+      `Application is running in ${env} mode on: http://localhost:${port}/api`,
     ),
   );
 }

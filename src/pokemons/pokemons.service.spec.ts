@@ -66,7 +66,7 @@ describe('PokemonsService', () => {
     });
 
     it('should log an error and throw NotFoundException if an error occurs in the repository', async () => {
-      const mockNames = ['pikachu12'];
+      const mockNames = ['pikachu'];
       const mockError = new Error('Database error');
 
       mockPokemonRepository.findByNames.mockRejectedValue(mockError);
